@@ -1,9 +1,12 @@
-import { IQuote } from "./types"
+import { IQuote } from "./types";
 
-export {}
+const quotesEndpoint = "http://localhost:3009/quotes/";
+const randomQuoteEndpoint = "http://localhost:3009/random/";
 
-const quotesEndpoint= 'http://localhost:3009/quotes/'
+export function fetchQuotes(): Promise<IQuote[]> {
+  return fetch(quotesEndpoint).then((res) => res.json());
+}
 
-export function fetchQuotes():Promise<IQuote[]>{
-    return fetch(quotesEndpoint).then(res=>res.json())
+export function fetchRandomQuote() {
+  return fetch(randomQuoteEndpoint).then((res) => res.json());
 }
