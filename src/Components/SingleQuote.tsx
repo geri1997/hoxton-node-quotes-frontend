@@ -9,8 +9,8 @@ type Props={
 const SingleQuote = ({text,author}:Props) => {
   return (
     <li>
-      <h3>bla bl bla bla bla bla bla</h3>
-      <h4>- Geri Luga</h4>
+      <h3>{text}</h3>
+      <h4>- {author}</h4>
     </li>
   );
 };
