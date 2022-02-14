@@ -14,12 +14,11 @@ function App() {
     fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
   }, []);
 
-
   return (
     <Routes>
       <Route index element={<Navigate replace to="/quotes" />} />
       <Route path="/quotes" element={<Home quotes={quotes} />} />
-      <Route path="/quotes/:id" element={<SingleQuotePage quotes={quotes} />} />
+      <Route path="/quotes/:id" element={<SingleQuotePage />} />
     </Routes>
   );
 }

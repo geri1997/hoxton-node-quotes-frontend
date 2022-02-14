@@ -18,5 +18,9 @@ export function createQuote(quote: { text: string; author: Author }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(quote),
-  })
+  });
+}
+
+export function fetchSingleQuote(id: string) {
+  return fetch(quotesEndpoint  + id).then((res) => res.json());
 }

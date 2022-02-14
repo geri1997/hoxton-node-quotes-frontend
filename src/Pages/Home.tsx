@@ -16,7 +16,7 @@ const Home = ({ quotes }: Props) => {
     author: {
       firstName: "",
       lastName: "",
-      age: Number(''),
+      age: 0,
       photo: "",
     },
   });
@@ -24,6 +24,16 @@ const Home = ({ quotes }: Props) => {
   function handleChange(e: { target: { name: any; value: any } }) {
     if (e.target.name === "text") {
       setFormData((formData) => ({ ...formData, text: e.target.value }));
+    } else if (e.target.name === "age") {
+      setFormData((formData) => {
+        return {
+          ...formData,
+          author: {
+            ...formData.author,
+            [e.target.name]: Number(e.target.value),
+          },
+        };
+      });
     } else {
       setFormData((formData) => {
         return {
@@ -33,9 +43,9 @@ const Home = ({ quotes }: Props) => {
       });
     }
   }
-  function handleSubmit(e: { preventDefault: () => void; }){
-    e.preventDefault()
-    createQuote(formData)
+  function handleSubmit(e: { preventDefault: () => void }) {
+    e.preventDefault();
+    createQuote(formData);
   }
 
   return (
@@ -46,7 +56,7 @@ const Home = ({ quotes }: Props) => {
         ))}
       </ul>
       <h2>Add new quote</h2>
-      <form onSubmit={handleSubmit}>
+      <form style={{ display: "grid", width: "200px" }} onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name:</label>
         <input
           onChange={handleChange}
