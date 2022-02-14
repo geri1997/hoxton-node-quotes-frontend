@@ -48,7 +48,7 @@ const Home = () => {
       });
     }
   }
-  function handleSubmit(e: { preventDefault: () => void }) {
+  function handleSubmit(e:any) {
     e.preventDefault();
     // const quoteToSend=JSON.parse(JSON.stringify(formData))
     // quoteToSend.author.age=Number(quoteToSend.author.age)
@@ -65,6 +65,8 @@ const Home = () => {
         }
       }
     });
+    const formEl:HTMLFormElement=e.target
+    formEl.reset()
   }
 
   return (
