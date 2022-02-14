@@ -54,7 +54,7 @@ const Home = () => {
     // quoteToSend.author.age=Number(quoteToSend.author.age)
     // console.log(quoteToSend)
     createQuote(formData).then((serverQuote) => {
-      if (!serverQuote.error) {
+      if (serverQuote.length===0) {
         setQuotes((prevQuotes) => [...prevQuotes, serverQuote]);
       } else {
         if (isValid) {
