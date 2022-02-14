@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import { IQuote } from "../types";
 
 type Props={
@@ -17,6 +18,7 @@ const SingleQuote = ({quote}: Props) => {
         <h4>{quote.author.firstName +' ' + quote.author.lastName}</h4>
         <span>{quote.author.age}</span>
       </div>
+
     </li>
   );
 };
