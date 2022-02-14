@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.authorInfo{
+    display: grid;
+    grid-auto-flow: column;
+    height: 60px;
+    width: 300px;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    margin-left: 6rem;
+    gap: 1rem;
+}
+img{
+    width: 60px;
+    height: 60px;
+}
+li.quote{
+    border: 1px solid black;
+    padding: 1rem;
+}

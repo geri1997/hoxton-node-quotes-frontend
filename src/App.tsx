@@ -1,33 +1,26 @@
-import { useEffect, useState } from "react";
-import { fetchQuotes, fetchRandomQuote } from "./api";
+import "../src/styles/index.css";
+import { Navigate, Route, Router, Routes, useNavigate } from "react-router-dom";
+import Home from "./Pages/Home";
 import SingleQuote from "./Components/SingleQuote";
+import { useEffect, useState } from "react";
 import { IQuote } from "./types";
+import { fetchQuotes } from "./api";
+import SingleQuotePage from "./Pages/SingleQuotePage";
 
 function App() {
   const [quotes, setQuotes] = useState<IQuote[]>([]);
-  const [randomQuote, setRandomQuote] = useState<IQuote | null>(null);
-
   useEffect(() => {
     fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
   }, []);
+  const navigate = useNavigate();
+
 
   return (
-    <>
-      <ul className="quote-list">
-        {quotes.map(({ id, text, author }) => (
-          <SingleQuote key={id} text={text} author={author} />
-        ))}
-      </ul>
-      <h2>Random Quote</h2>
-      <button
-        onClick={(e) =>
-          fetchRandomQuote().then((quote) => setRandomQuote(quote))
-        }
-      >
-        Get random quote
-      </button>
-      {randomQuote && <SingleQuote text={randomQuote.text} author={randomQuote.author} />}
-    </>
+    <Routes>
+      <Route index element={<Navigate replace to="/quotes" />} />
+      <Route path="/quotes" element={<Home quotes={quotes}/>} />
+      <Route path="/quotes/:id" element={<SingleQuotePage quotes={quotes}/>} />
+    </Routes>
   );
 }
 
