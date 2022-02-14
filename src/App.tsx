@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
   }, []);
-  const navigate = useNavigate();
+
 
   return (
     <Routes>
