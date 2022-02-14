@@ -11,16 +11,25 @@ export function fetchRandomQuote() {
   return fetch(randomQuoteEndpoint).then((res) => res.json());
 }
 
-export function createQuote(quote: { text: string; author: Author }) {
-  fetch(quotesEndpoint, {
+export function createQuote(quote: {
+  text: string;
+  author: {
+    firstName: string;
+    lastName: string;
+    age: string;
+    photo: string;
+    bio: string;
+  };
+}) {
+  return fetch(quotesEndpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(quote),
-  });
+  }).then((res) => res.json());
 }
 
 export function fetchSingleQuote(id: string) {
-  return fetch(quotesEndpoint  + id).then((res) => res.json());
+  return fetch(quotesEndpoint + id).then((res) => res.json());
 }

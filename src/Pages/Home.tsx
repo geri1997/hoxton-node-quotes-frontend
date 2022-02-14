@@ -4,11 +4,9 @@ import { createQuote, fetchQuotes, fetchRandomQuote } from "../api";
 import SingleQuote from "../Components/SingleQuote";
 import { IQuote } from "../types";
 
-type Props = {
-  quotes: IQuote[];
-};
-
-const Home = ({ quotes }: Props) => {
+const Home = () => {
+  const [quotes, setQuotes] = useState<IQuote[]>([]);
+  const [isValid, setIsValid] = useState<Boolean>(true);
   const [randomQuote, setRandomQuote] = useState<IQuote | null>(null);
   const [searchedQuotes, setSearchedQuotes] = useState<IQuote[]>([]);
   const [formData, setFormData] = useState({
@@ -16,25 +14,32 @@ const Home = ({ quotes }: Props) => {
     author: {
       firstName: "",
       lastName: "",
-      age: 0,
+      age: "",
       photo: "",
+      bio: "",
     },
   });
+
+  useEffect(() => {
+    fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
+  }, []);
 
   function handleChange(e: { target: { name: any; value: any } }) {
     if (e.target.name === "text") {
       setFormData((formData) => ({ ...formData, text: e.target.value }));
-    } else if (e.target.name === "age") {
-      setFormData((formData) => {
-        return {
-          ...formData,
-          author: {
-            ...formData.author,
-            [e.target.name]: Number(e.target.value),
-          },
-        };
-      });
-    } else {
+    }
+    // else if (e.target.name === "age") {
+    //   setFormData((formData) => {
+    //     return {
+    //       ...formData,
+    //       author: {
+    //         ...formData.author,
+    //         [e.target.name]: Number(e.target.value),
+    //       },
+    //     };
+    //   });
+    // }
+    else {
       setFormData((formData) => {
         return {
           ...formData,
@@ -45,7 +50,21 @@ const Home = ({ quotes }: Props) => {
   }
   function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
-    createQuote(formData);
+    // const quoteToSend=JSON.parse(JSON.stringify(formData))
+    // quoteToSend.author.age=Number(quoteToSend.author.age)
+    // console.log(quoteToSend)
+    createQuote(formData).then((serverQuote) => {
+      if (!serverQuote.error) {
+        setQuotes((prevQuotes) => [...prevQuotes, serverQuote]);
+      } else {
+        if (isValid) {
+          setIsValid(false);
+          setTimeout(() => {
+            setIsValid(true);
+          }, 2000);
+        }
+      }
+    });
   }
 
   return (
@@ -73,10 +92,13 @@ const Home = ({ quotes }: Props) => {
         />
         <label htmlFor="age">Age:</label>
         <input onChange={handleChange} type="text" name="age" id="age" />
+        {!isValid && <p style={{ color: "red" }}>Age should be a number</p>}
         <label htmlFor="photo">Photo:</label>
         <input onChange={handleChange} type="text" name="photo" id="photo" />
         <label htmlFor="text">Text:</label>
         <input onChange={handleChange} type="text" name="text" id="text" />
+        <label htmlFor="bio">Bio:</label>
+        <textarea onChange={handleChange} name="bio" id="bio"></textarea>
         <button type="submit">Create</button>
       </form>
       <h2>Random Quote</h2>

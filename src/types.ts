@@ -9,4 +9,5 @@ export interface Author{
     firstName:string
     lastName:string
     photo:string
+    bio:string
 }

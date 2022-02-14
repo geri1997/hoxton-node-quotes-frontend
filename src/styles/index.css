@@ -8,11 +8,12 @@
     display: grid;
     grid-auto-flow: column;
     height: 60px;
-    width: 300px;
+
     align-items: flex-end;
     margin-bottom: 2rem;
     margin-left: 6rem;
     gap: 1rem;
+    justify-items: start
 }
 img{
     width: 60px;
