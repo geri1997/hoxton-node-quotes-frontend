@@ -8,11 +8,15 @@ import { fetchQuotes } from "./api";
 import SingleQuotePage from "./Pages/SingleQuotePage";
 
 function App() {
+  const [quotes, setQuotes] = useState<IQuote[]>([]);
+  useEffect(() => {
+    fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
+  }, []);
   return (
     <Routes>
       <Route index element={<Navigate replace to="/quotes" />} />
-      <Route path="/quotes" element={<Home />} />
-      <Route path="/quotes/:id" element={<SingleQuotePage />} />
+      <Route path="/quotes" element={<Home quotes={quotes} setQuotes={setQuotes}/>} />
+      <Route path="/quotes/:id" element={<SingleQuotePage setQuotes={setQuotes} />} />
     </Routes>
   );
 }

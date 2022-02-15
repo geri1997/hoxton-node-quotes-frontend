@@ -33,3 +33,17 @@ export function createQuote(quote: {
 export function fetchSingleQuote(id: string) {
   return fetch(quotesEndpoint + id).then((res) => res.json());
 }
+
+export function deleteQuote(id: number) {
+  fetch(quotesEndpoint + id, { method: "DELETE" }).then((res) => res.json());
+}
+
+export function patchQuote(id: string | number, obj: {}) {
+  return fetch(quotesEndpoint + id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(obj),
+  }).then((res) => res.json());
+}

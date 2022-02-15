@@ -4,8 +4,12 @@ import { createQuote, fetchQuotes, fetchRandomQuote } from "../api";
 import SingleQuote from "../Components/SingleQuote";
 import { IQuote } from "../types";
 
-const Home = () => {
-  const [quotes, setQuotes] = useState<IQuote[]>([]);
+type Props = {
+  quotes: IQuote[];
+  setQuotes: any;
+};
+
+const Home = ({ quotes, setQuotes }: Props) => {
   const [isValid, setIsValid] = useState<Boolean>(true);
   const [randomQuote, setRandomQuote] = useState<IQuote | null>(null);
   const [searchedQuotes, setSearchedQuotes] = useState<IQuote[]>([]);
@@ -19,10 +23,6 @@ const Home = () => {
       bio: "",
     },
   });
-
-  useEffect(() => {
-    fetchQuotes().then((serverQuotes) => setQuotes(serverQuotes));
-  }, []);
 
   function handleChange(e: { target: { name: any; value: any } }) {
     if (e.target.name === "text") {
@@ -48,15 +48,14 @@ const Home = () => {
       });
     }
   }
-  function handleSubmit(e:any) {
+  function handleSubmit(e: any) {
     e.preventDefault();
     // const quoteToSend=JSON.parse(JSON.stringify(formData))
     // quoteToSend.author.age=Number(quoteToSend.author.age)
     // console.log(quoteToSend)
     createQuote(formData).then((serverQuote) => {
-      
       if (!serverQuote[0]) {
-        setQuotes((prevQuotes) => [...prevQuotes, serverQuote]);
+        setQuotes((prevQuotes: IQuote[]) => [...prevQuotes, serverQuote]);
       } else {
         if (isValid) {
           setIsValid(false);
@@ -66,19 +65,21 @@ const Home = () => {
         }
       }
     });
-    const formEl:HTMLFormElement=e.target
-    formEl.reset()
+    const formEl: HTMLFormElement = e.target;
+    formEl.reset();
   }
 
   return (
     <>
       <ul className="quote-list">
         {quotes.map((quote) => (
-          <SingleQuote key={quote.id} quote={quote} />
+          <SingleQuote setQuotes={setQuotes} key={quote.id} quote={quote} />
         ))}
       </ul>
       <h2>Add new quote</h2>
       <form style={{ display: "grid", width: "200px" }} onSubmit={handleSubmit}>
+      <label htmlFor="text">Text:</label>
+        <input onChange={handleChange} type="text" name="text" id="text" />
         <label htmlFor="firstName">First Name:</label>
         <input
           onChange={handleChange}
@@ -98,8 +99,7 @@ const Home = () => {
         {!isValid && <p style={{ color: "red" }}>Age should be a number</p>}
         <label htmlFor="photo">Photo:</label>
         <input onChange={handleChange} type="text" name="photo" id="photo" />
-        <label htmlFor="text">Text:</label>
-        <input onChange={handleChange} type="text" name="text" id="text" />
+        
         <label htmlFor="bio">Bio:</label>
         <textarea onChange={handleChange} name="bio" id="bio"></textarea>
         <button type="submit">Create</button>
@@ -112,7 +112,7 @@ const Home = () => {
       >
         Get random quote
       </button>
-      {randomQuote && <SingleQuote quote={randomQuote} />}
+      {randomQuote && <SingleQuote randomQuote={randomQuote} setRandomQuote={setRandomQuote} setQuotes={setQuotes} quote={randomQuote} />}
       <h2>Search</h2>
       <form
         onSubmit={(e) => {
@@ -121,12 +121,7 @@ const Home = () => {
             author: HTMLInputElement;
           };
           e.preventDefault();
-          console.log(
-            "http://localhost:3009/quotes?textQ=" +
-              formEl.text.value +
-              "&authorQ=" +
-              formEl.author.value
-          );
+
           fetch(
             "http://localhost:3009/quotes?textQ=" +
               formEl.text.value.toLowerCase() +
@@ -147,7 +142,11 @@ const Home = () => {
       </form>
       <ul className="quote-list">
         {searchedQuotes.map((quote) => (
-          <SingleQuote key={"search" + quote.id} quote={quote} />
+          <SingleQuote
+            setQuotes={setQuotes}
+            key={"search" + quote.id}
+            quote={quote}
+          />
         ))}
       </ul>
     </>

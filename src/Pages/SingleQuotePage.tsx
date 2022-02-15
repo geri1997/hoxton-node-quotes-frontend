@@ -4,9 +4,11 @@ import { fetchSingleQuote } from "../api";
 import SingleQuote from "../Components/SingleQuote";
 import { IQuote } from "../types";
 
+type Props={
+  setQuotes:any
+}
 
-
-const SingleQuotePage = () => {
+const SingleQuotePage = ({setQuotes}:Props) => {
   const params = useParams();
   const [singleQuote, setSingleQuote] = useState<null|IQuote>(null)
 
@@ -17,7 +19,7 @@ const SingleQuotePage = () => {
   if (singleQuote) {
     return (
       <div>
-        <SingleQuote quote={singleQuote} />
+        <SingleQuote setQuotes={setQuotes} quote={singleQuote} setSingleQuote={setSingleQuote}/>
       </div>
     );
   }
