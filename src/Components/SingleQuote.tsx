@@ -32,7 +32,7 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
               props.setRandomQuote(null);
             }
             if (
-              props.searchedQuotes.find((quot: IQuote) => quot.id === quote.id)
+              props.searchedQuotes?.find((quot: IQuote) => quot.id === quote.id)
             ) {
               const newSearchedQuotes = props.searchedQuotes.filter(
                 (sQuote: IQuote) => sQuote.id !== quote.id
@@ -56,17 +56,52 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
               change: HTMLSelectElement;
               value: HTMLInputElement;
             };
-            const propToChange =
-              formEl.change.value === "text"
-                ? { [formEl.change.value]: formEl.value.value }
-                : {
-                    author: {
-                      ...quote.author,
-                      [formEl.change.value]: formEl.value.value,
-                    },
-                  };
+            const propToChange = { [formEl.change.value]: formEl.value.value };
+
             patchQuote(quote.id, propToChange);
-            console.log(propToChange);
+
+            if (propToChange.text) {
+              setQuotes((prevQuotes: any) => {
+                const quotesCopy = JSON.parse(JSON.stringify(prevQuotes));
+                const quoteMatch = quotesCopy.find(
+                  (quot: any) => quot.id === quote.id
+                );
+                quoteMatch.text = propToChange.text;
+                formEl.reset();
+                return quotesCopy;
+              });
+            } else if (propToChange.age) {
+              if (
+                typeof Number(formEl.value.value) === "number" &&
+                !Number.isNaN(Number(formEl.value.value)) &&
+                typeof formEl.value.value !== "boolean" &&
+                typeof formEl.value.value !== "object"
+              ) {
+                setQuotes((prevQuotes: any) => {
+                  const quotesCopy = JSON.parse(JSON.stringify(prevQuotes));
+                  const quoteMatch = quotesCopy.find(
+                    (quot: any) => quot.id === quote.id
+                  );
+                  quoteMatch.author[formEl.change.value] = formEl.value.value;
+
+                  console.log(quotesCopy);
+                  // formEl.reset(); me kyt nuk punon se di pse
+                  return quotesCopy;
+                });
+              }
+            } else {
+              setQuotes((prevQuotes: any) => {
+                const quotesCopy = JSON.parse(JSON.stringify(prevQuotes));
+                const quoteMatch = quotesCopy.find(
+                  (quot: any) => quot.id === quote.id
+                );
+                quoteMatch.author[formEl.change.value] = formEl.value.value;
+
+                console.log(quotesCopy);
+                // formEl.reset(); me kyt nuk punon se di pse
+                return quotesCopy;
+              });
+            }
           }}
         >
           <select name="change" id="">
