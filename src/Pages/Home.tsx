@@ -78,7 +78,7 @@ const Home = ({ quotes, setQuotes }: Props) => {
       </ul>
       <h2>Add new quote</h2>
       <form style={{ display: "grid", width: "200px" }} onSubmit={handleSubmit}>
-      <label htmlFor="text">Text:</label>
+        <label htmlFor="text">Text:</label>
         <input onChange={handleChange} type="text" name="text" id="text" />
         <label htmlFor="firstName">First Name:</label>
         <input
@@ -99,7 +99,7 @@ const Home = ({ quotes, setQuotes }: Props) => {
         {!isValid && <p style={{ color: "red" }}>Age should be a number</p>}
         <label htmlFor="photo">Photo:</label>
         <input onChange={handleChange} type="text" name="photo" id="photo" />
-        
+
         <label htmlFor="bio">Bio:</label>
         <textarea onChange={handleChange} name="bio" id="bio"></textarea>
         <button type="submit">Create</button>
@@ -112,7 +112,14 @@ const Home = ({ quotes, setQuotes }: Props) => {
       >
         Get random quote
       </button>
-      {randomQuote && <SingleQuote randomQuote={randomQuote} setRandomQuote={setRandomQuote} setQuotes={setQuotes} quote={randomQuote} />}
+      {randomQuote && (
+        <SingleQuote
+          randomQuote={randomQuote}
+          setRandomQuote={setRandomQuote}
+          setQuotes={setQuotes}
+          quote={randomQuote}
+        />
+      )}
       <h2>Search</h2>
       <form
         onSubmit={(e) => {
@@ -143,6 +150,8 @@ const Home = ({ quotes, setQuotes }: Props) => {
       <ul className="quote-list">
         {searchedQuotes.map((quote) => (
           <SingleQuote
+          searchedQuotes={searchedQuotes}
+            setSearchedQuotes={setSearchedQuotes}
             setQuotes={setQuotes}
             key={"search" + quote.id}
             quote={quote}

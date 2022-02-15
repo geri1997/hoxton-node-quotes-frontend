@@ -3,8 +3,6 @@ import { deleteQuote, patchQuote } from "../api";
 
 import { IQuote } from "../types";
 
-
-
 const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
   return (
     <li className="quote">
@@ -24,11 +22,22 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
             setQuotes((prevQuotes: IQuote[]) =>
               prevQuotes.filter((quot) => quot.id !== quote.id)
             );
-            if(document.location.href==='http://localhost:3000/quotes/'+quote.id){
-              props.setSingleQuote(null)
+            if (
+              document.location.href ===
+              "http://localhost:3000/quotes/" + quote.id
+            ) {
+              props.setSingleQuote(null);
             }
-            if(props.randomQuote?.id===quote.id){
-              props.setRandomQuote(null)
+            if (props.randomQuote?.id === quote.id) {
+              props.setRandomQuote(null);
+            }
+            if (
+              props.searchedQuotes.find((quot: IQuote) => quot.id === quote.id)
+            ) {
+              const newSearchedQuotes = props.searchedQuotes.filter(
+                (sQuote: IQuote) => sQuote.id !== quote.id
+              );
+              props.setSearchedQuotes(newSearchedQuotes);
             }
           }}
           style={{
