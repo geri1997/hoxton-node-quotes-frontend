@@ -7,7 +7,18 @@ import { IQuote } from "../types";
 type Props = {
     quotes: IQuote[];
     setQuotes: any;
+
+    
 };
+
+const initialFormData={ text: "",
+author: {
+    firstName: "",
+    lastName: "",
+    age: "",
+    photo: "",
+    bio: "",
+},}
 
 const Home = ({ quotes, setQuotes }: Props) => {
     const [isValid, setIsValid] = useState<Boolean>(true);
@@ -57,11 +68,14 @@ const Home = ({ quotes, setQuotes }: Props) => {
         // quoteToSend.author.age=Number(quoteToSend.author.age)
         // console.log(quoteToSend)
         createQuote(formData).then((serverQuote) => {
+          console.log(serverQuote)
             if (!serverQuote[0]) {
                 setQuotes((prevQuotes: IQuote[]) => [
                     ...prevQuotes,
                     serverQuote,
                 ]);
+                setFormData(initialFormData)
+                formEl.reset();
             } else {
                 if (isValid) {
                     setIsValid(false);
@@ -72,7 +86,7 @@ const Home = ({ quotes, setQuotes }: Props) => {
             }
         });
         const formEl: HTMLFormElement = e.target;
-        formEl.reset();
+        
     }
 
     return (

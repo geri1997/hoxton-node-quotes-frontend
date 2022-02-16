@@ -2,6 +2,7 @@ import { Author, IQuote } from "./types";
 
 const quotesEndpoint = "http://localhost:3009/quotes/";
 const randomQuoteEndpoint = "http://localhost:3009/random/";
+const authorEndpoint = "http://localhost:3009/author/";
 
 export function fetchQuotes(): Promise<IQuote[]> {
   return fetch(quotesEndpoint).then((res) => res.json());
@@ -40,6 +41,16 @@ export function deleteQuote(id: number) {
 
 export function patchQuote(id: string | number, obj: {}) {
   return fetch(quotesEndpoint + id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(obj),
+  }).then((res) => res.json());
+}
+
+export function patchAuthor(id: string | number, obj: {}) {
+  return fetch(authorEndpoint + id, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
