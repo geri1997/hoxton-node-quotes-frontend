@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { deleteQuote, patchAuthor, patchQuote } from "../api";
 
 import { IQuote } from "../types";
@@ -77,16 +77,17 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
                         );
                         quoteMatch.text = propToChange.text;
                         console.log(propToChange.text);
-                        formEl.reset();
+
                         return quotesCopy;
                      });
                   } else if (propToChange.age) {
                      if (
-                        typeof Number(formEl.value.value) === "number" &&
-                        !Number.isNaN(Number(formEl.value.value)) &&
-                        typeof formEl.value.value !== "boolean" &&
-                        typeof formEl.value.value !== "object"
+                        typeof parseInt(formEl.value.value) === "number" &&
+                        !Number.isNaN(parseInt(formEl.value.value))
                      ) {
+                        //@ts-ignore
+                        const value = formEl.value.value;
+                        const keyToChange = formEl.change.value;
                         setQuotes((prevQuotes: any) => {
                            const quotesCopy = JSON.parse(
                               JSON.stringify(prevQuotes)
@@ -94,15 +95,18 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
                            const quoteMatch = quotesCopy.find(
                               (quot: any) => quot.id === quote.id
                            );
-                           quoteMatch.author[formEl.change.value] =
-                              formEl.value.value;
+                           const ageVal = formEl.value.value;
+                           //@ts-ignore
+                           quoteMatch.author[keyToChange] = value;
 
                            //  console.log(quotesCopy);
-                           // formEl.reset(); me kyt nuk punon se di pse
                            return quotesCopy;
                         });
                      }
                   } else {
+                     //@ts-ignore
+                     const value = formEl.value.value;
+                     const keyToChange = formEl.change.value;
                      setQuotes((prevQuotes: any) => {
                         const quotesCopy = JSON.parse(
                            JSON.stringify(prevQuotes)
@@ -110,14 +114,13 @@ const SingleQuote = ({ quote, setQuotes, ...props }: any) => {
                         const quoteMatch = quotesCopy.find(
                            (quot: any) => quot.id === quote.id
                         );
-                        quoteMatch.author[formEl.change.value] =
-                           formEl.value.value;
+                        quoteMatch.author[keyToChange] = value;
 
                         // console.log(quotesCopy);
-                        // formEl.reset(); me kyt nuk punon se di pse
                         return quotesCopy;
                      });
                   }
+                  formEl.reset();
                }}
             >
                <select name="change" id="">

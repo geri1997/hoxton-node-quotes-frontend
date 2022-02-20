@@ -185,7 +185,21 @@ const Home = ({ quotes, setQuotes }: Props) => {
                     )
                         .then((res) => res.json())
                         .then((serverSearchedQuotes) => {
-                            setSearchedQuotes(serverSearchedQuotes);
+                            const quotesToSave = []
+                            for (const quote of serverSearchedQuotes) {
+                                const quoteToSave:any = {}
+                                quoteToSave.text = quote.text
+                                quoteToSave.authorId = quote.authorId
+                                quoteToSave.author = {}
+                                quoteToSave.author.firstName = quote.firstName
+                                quoteToSave.author.lastName  = quote.lastName
+                                quoteToSave.author.age = quote.age
+                                quoteToSave.author.bio = quote.bio
+                                quoteToSave.author.photo = quote.photo
+                                quoteToSave.id = quote.id
+                                quotesToSave.push(quoteToSave)
+                            }
+                            setSearchedQuotes(quotesToSave);
                         });
                 }}
             >
